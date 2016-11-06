@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Tour Bangladesh</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="rational_permission">Give Permission</string>
+    <string name="permission_denied">This applicatin need this permission</string>
+    <string name="backdrop_description">Backdrop Description</string>
+</resources>
