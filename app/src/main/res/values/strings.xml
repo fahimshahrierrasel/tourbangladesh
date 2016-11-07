@@ -8,4 +8,8 @@
     <string name="rational_permission">Give Permission</string>
     <string name="permission_denied">This applicatin need this permission</string>
     <string name="backdrop_description">Backdrop Description</string>
+    <string name="card_spot_name">Minimal City</string>
+    <string name="card_spot_location">Dhaka</string>
+    <string name="card_spot_distance">Distance from your location 20 km</string>
+    <string name="card_spot_image">Card Spot Image</string>
 </resources>

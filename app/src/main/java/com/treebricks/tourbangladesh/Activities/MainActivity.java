@@ -1,8 +1,9 @@
-package com.treebricks.tourbangladesh;
+package com.treebricks.tourbangladesh.activities;
 
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.holidaycheck.permissify.DialogText;
 import com.holidaycheck.permissify.PermissifyConfig;
+import com.treebricks.tourbangladesh.R;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -309,5 +311,10 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         locationManager.removeUpdates(this);
+    }
+
+    public void suggestionButtonClickHandler(View view) {
+        Intent spotSuggestion = new Intent(MainActivity.this, SpotSuggestion.class);
+        startActivity(spotSuggestion);
     }
 }
