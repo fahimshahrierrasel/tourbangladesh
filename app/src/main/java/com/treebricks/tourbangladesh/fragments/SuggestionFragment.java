@@ -1,9 +1,14 @@
-package com.treebricks.tourbangladesh.activities;
+package com.treebricks.tourbangladesh.fragments;
 
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.treebricks.tourbangladesh.R;
 import com.treebricks.tourbangladesh.adapter.SuggestionCardAdapter;
@@ -12,17 +17,26 @@ import com.treebricks.tourbangladesh.model.SpotCardModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpotSuggestion extends AppCompatActivity {
+/**
+ * Created by fahim on 11/10/16.
+ */
 
+public class SuggestionFragment extends Fragment {
     RecyclerView spotsRecyclerView;
     List<SpotCardModel> allSpots;
     SuggestionCardAdapter suggestionCardAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spot_suggestion);
-        spotsRecyclerView = (RecyclerView) findViewById(R.id.spot_recyclerview);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.suggestion_layout, container, false);
+        spotsRecyclerView = (RecyclerView) view.findViewById(R.id.spot_recyclerview);
 
         allSpots = new ArrayList<SpotCardModel>();
 
@@ -47,18 +61,24 @@ public class SpotSuggestion extends AppCompatActivity {
         allSpots.add(new SpotCardModel("http://4.bp.blogspot.com/_Mnz_ftEtg7c/S2XNWhRyZlI/AAAAAAAAAg8/4crZL7TWgLE/s400/ZOO+2.jpg",
                 "Bangladesh National Zoo", "Dhaka", "17 km"));
 
-        suggestionCardAdapter = new SuggestionCardAdapter(allSpots, SpotSuggestion.this);
+        suggestionCardAdapter = new SuggestionCardAdapter(allSpots, getActivity());
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SpotSuggestion.this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
         spotsRecyclerView.setLayoutManager(linearLayoutManager);
         spotsRecyclerView.setAdapter(suggestionCardAdapter);
 
-        if(getSupportActionBar() != null)
-        {
-            getSupportActionBar().setTitle("Spot Suggestion");
-        }
-
-
+        return view;
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
 }
