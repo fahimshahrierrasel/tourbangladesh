@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Activity Background Color -->
+
+    <color name="suggestion_activity_color">#A7425C</color>
+    <color name="spot_finder_activity_color">#607D8B</color>
+    <color name="about_activity_color">#43A047</color>
+
+
 </resources>

@@ -12,4 +12,5 @@
     <string name="card_spot_location">Dhaka</string>
     <string name="card_spot_distance">Distance from your location 20 km</string>
     <string name="card_spot_image">Card Spot Image</string>
+
 </resources>
