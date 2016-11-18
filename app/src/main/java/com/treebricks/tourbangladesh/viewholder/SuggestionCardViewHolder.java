@@ -2,6 +2,7 @@ package com.treebricks.tourbangladesh.viewholder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ public class SuggestionCardViewHolder extends RecyclerView.ViewHolder {
     private TextView cardSpotName;
     private TextView cardSpotLocation;
     private TextView cardSpotDistance;
+    public CardView suggestionCard;
 
     public SuggestionCardViewHolder(View itemView) {
         super(itemView);
@@ -27,6 +29,7 @@ public class SuggestionCardViewHolder extends RecyclerView.ViewHolder {
         cardSpotName = (TextView) itemView.findViewById(R.id.card_spot_name);
         cardSpotLocation = (TextView) itemView.findViewById(R.id.card_spot_location);
         cardSpotDistance = (TextView) itemView.findViewById(R.id.card_spot_distance);
+        suggestionCard = (CardView) itemView.findViewById(R.id.suggestion_card);
     }
 
     public void bindData(Context cardContext, String spotImageUrl, String spotName, String spotLocation, String spotDistance)

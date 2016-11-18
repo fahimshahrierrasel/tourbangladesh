@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         // Navigation Drawer Header
         homePageAccountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.drawable.minimalistic_city)
+                .withHeaderBackground(R.drawable.visit_bangladesh)
                 .withCompactStyle(false)
                 .withSavedInstance(savedInstanceState)
                 .build();

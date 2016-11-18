@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:background="@color/about_activity_color"
         android:paddingTop="?attr/actionBarSize"
+        android:id="@+id/root"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
