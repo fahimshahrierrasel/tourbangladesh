@@ -15,46 +15,36 @@
         android:elevation="4dp"/>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/spot_finder_activity_color"
         android:paddingTop="?attr/actionBarSize"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
-        <ScrollView
+
+
+
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="46dp"
+            android:id="@+id/app_info"
+            android:background="@color/md_white_1000"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            app:cardCornerRadius="5dp">
 
-            <RelativeLayout
+            <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                />
+        </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:id="@+id/latitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="500dp"
-                    android:text="Hello World!" />
-
-                <TextView
-                    android:id="@+id/longitude"
-                    android:layout_below="@+id/latitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="500dp"
-                    android:text="Hello World!" />
-
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_below="@+id/longitude"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hello World!" />
-
-            </RelativeLayout>
-
-        </ScrollView>
 
     </FrameLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>
 

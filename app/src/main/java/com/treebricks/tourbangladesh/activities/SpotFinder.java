@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -14,6 +16,9 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.treebricks.tourbangladesh.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpotFinder extends AppCompatActivity {
 
@@ -103,6 +108,18 @@ public class SpotFinder extends AppCompatActivity {
                     }
                 })
                 .build();
+
+        List<String> catagories = new ArrayList<>();
+        catagories.add("World Curtural Heritage Sites");
+        catagories.add("Archaeological Sites");
+        catagories.add("Architectural Wonders");
+        catagories.add("Hill tracts");
+        catagories.add("Beaches");
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, catagories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
 
     }
 }

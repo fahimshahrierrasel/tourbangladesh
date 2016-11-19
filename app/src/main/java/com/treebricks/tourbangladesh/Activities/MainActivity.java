@@ -1,8 +1,8 @@
 package com.treebricks.tourbangladesh.activities;
 
-
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,9 +16,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,8 +28,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
-import com.holidaycheck.permissify.PermissifyConfig;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -35,6 +37,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.treebricks.tourbangladesh.R;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,30 +52,27 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     TextView latitude;
     TextView longitude;
     TextView addressTextView;
-
     public static final String TAG = MainActivity.class.getSimpleName();
-
     LocationManager locationManager;
     String provider;
     String lalbaghFort1 = "http://i.imgur.com/SAvQ8N6.jpg";
     String lalbaghFort2 = "http://i.imgur.com/N0XX15z.jpg";
-    PermissifyConfig permissifyConfig;
     ImageView backdrop;
-
     CountDownTimer countDownTimer;
-
-    private Drawer homePageDrawer = null;
-    private AccountHeader homePageAccountHeader = null;
-
+    Location location;
+    SharedPreferences getPrefs;
+    Criteria criteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
 
                 boolean isFirstRun = getPrefs.getBoolean("first_run", true);
                 if (isFirstRun) {
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         t.start();
         setContentView(R.layout.activity_main);
 
+
         backdrop = (ImageView) findViewById(R.id.backdrop);
         latitude = (TextView) findViewById(R.id.latitude);
         longitude = (TextView) findViewById(R.id.longitude);
@@ -95,15 +96,41 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setSupportActionBar(toolbar);
 
 
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, 111);
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION) &&
+                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                showExplanation("Permission Needed", "Rationale");
+            } else {
+                ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION}, 111);
+            }
+        }
+        else{
+            provider = locationManager.getBestProvider(criteria, false);
+            location = locationManager.getLastKnownLocation(provider);
+        }
+
+
+
         // Navigation Drawer Header
-        homePageAccountHeader = new AccountHeaderBuilder()
+        AccountHeader homePageAccountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.visit_bangladesh)
                 .withCompactStyle(false)
                 .withSavedInstance(savedInstanceState)
                 .build();
         // Navigation Drawer
-        homePageDrawer = new DrawerBuilder()
+        Drawer homePageDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withAccountHeader(homePageAccountHeader)
@@ -120,45 +147,35 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if(drawerItem != null)
-                        {
-                            switch ((int) drawerItem.getIdentifier())
-                            {
-                                case 1:
-                                {
-                                    //Intent home = new Intent(MainActivity.this, MainActivity.class);
-                                    //startActivity(home);
-                                    //finish();
+                        if (drawerItem != null) {
+                            switch ((int) drawerItem.getIdentifier()) {
+                                case 1: {
+                                    Snackbar.make(view, "You are already on Home.", Snackbar.LENGTH_SHORT).show();
                                     break;
                                 }
-                                case 2:
-                                {
+                                case 2: {
                                     Intent suggestion = new Intent(MainActivity.this, Suggestion.class);
                                     startActivity(suggestion);
                                     finish();
                                     break;
                                 }
-                                case 3:
-                                {
+                                case 3: {
                                     Intent spotFinder = new Intent(MainActivity.this, SpotFinder.class);
                                     startActivity(spotFinder);
                                     finish();
                                     break;
                                 }
-                                case 4:
-                                {
+                                case 4: {
                                     //Intent liveMap = new Intent(MainActivity.this, Suggestion.class);
                                     //startActivity(liveMap);
                                     break;
                                 }
-                                case 5:
-                                {
+                                case 5: {
                                     //Intent settings = new Intent(MainActivity.this, Suggestion.class);
                                     //startActivity(settings);
                                     break;
                                 }
-                                case 6:
-                                {
+                                case 6: {
                                     Intent info = new Intent(MainActivity.this, About.class);
                                     startActivity(info);
                                     finish();
@@ -195,33 +212,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         countDownTimer.start();
 
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        Criteria criteria = new Criteria();
-        provider = locationManager.getBestProvider(criteria, false);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-
-        }
-        Location location = locationManager.getLastKnownLocation(provider);
-
-
         if (location != null) {
             System.out.println("Provider " + provider + " has been selected.");
             onLocationChanged(location);
         } else {
-            latitude.setText("Location not available");
-            longitude.setText("Location not available");
-            System.out.println("Location not found!");
+            latitude.setText(getPrefs.getString("latitude", "00.0000000"));
+            longitude.setText(getPrefs.getString("longitude", "00.0000000"));
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -232,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         .setAction("Action", null).show();
             }
         });
+
 
     }
 
@@ -249,6 +246,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         double lat = location.getLatitude();
         double lng = location.getLongitude();
 
+        SharedPreferences.Editor preferenceEditor = getPrefs.edit();
+        preferenceEditor.putString("latitude", String.format(Locale.US, "%.7f", lat));
+        preferenceEditor.putString("longitude", String.format(Locale.US, "%.7f", lng));
+        preferenceEditor.apply();
+
+        latitude.setText(getPrefs.getString("latitude", "00.0000000"));
+        longitude.setText(getPrefs.getString("longitude", "00.0000000"));
+
+
         Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
         StringBuilder builder = new StringBuilder();
         try {
@@ -257,13 +263,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             for (int i = 0; i < maxLines; i++) {
                 String addressStr = address.get(0).getAddressLine(i);
                 builder.append(addressStr);
-                builder.append(" ");
+                builder.append("\n");
             }
-
             String fnialAddress = builder.toString(); //This is the complete address.
-
-            latitude.setText(String.valueOf(lat));
-            longitude.setText(String.valueOf(lng));
             addressTextView.setText(fnialAddress); //This will display the final address.
 
 
@@ -296,44 +298,63 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onActivityCreated: OnActivityCreated");
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-            return;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            locationManager.requestLocationUpdates(provider, 400, 1, this);
         }
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
+        super.onStart();
     }
 
     @Override
     protected void onStop() {
-        super.onStop();
         countDownTimer.cancel();
+        super.onStop();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == 111)
+        {
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(MainActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                {
+                    provider = locationManager.getBestProvider(criteria, false);
+                    location = locationManager.getLastKnownLocation(provider);
+                    locationManager.requestLocationUpdates(provider, 400, 1, this);
+                    onLocationChanged(location);
+                }
+
+            }
+            else {
+                Toast.makeText(MainActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+            }
         }
-        locationManager.removeUpdates(this);
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void showExplanation(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION}, 111);
+                    }
+                });
+        builder.create().show();
     }
 
     private void copyDatabase(String filename) {
@@ -342,16 +363,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         InputStream input = null;
         OutputStream output = null;
         try {
-            Log.i(TAG, "Copying Database "+filename);
+            Log.i(TAG, "Copying Database " + filename);
             input = assetManager.open(filename);
             File DatabaseDirectory = new File(getBaseContext().getApplicationInfo().dataDir + "/databases");
-            if(!DatabaseDirectory.exists())
-            {
+            if (!DatabaseDirectory.exists()) {
                 DatabaseDirectory.mkdirs();
-                Log.i(TAG,"Directory Created" + DatabaseDirectory);
+                Log.i(TAG, "Directory Created" + DatabaseDirectory);
             }
 
-            output = new FileOutputStream(DatabaseDirectory+"/"+filename);
+            output = new FileOutputStream(DatabaseDirectory + "/" + filename);
 
             byte[] buffer = new byte[1024];
             int read;
@@ -359,10 +379,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 output.write(buffer, 0, read);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Exception in copying Database: "+ filename);
-            Log.e(TAG, "Exception in copying Database Error: "+ e.toString());
-        }
-        finally {
+            Log.e(TAG, "Exception in copying Database: " + filename);
+            Log.e(TAG, "Exception in copying Database Error: " + e.toString());
+        } finally {
             try {
                 if (output != null)
                     output.close();

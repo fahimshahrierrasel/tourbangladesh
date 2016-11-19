@@ -1,7 +1,11 @@
 package com.treebricks.tourbangladesh.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.location.Location;
+import android.location.LocationManager;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -19,7 +24,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.treebricks.tourbangladesh.R;
 import com.treebricks.tourbangladesh.adapter.SuggestionCardAdapter;
 import com.treebricks.tourbangladesh.database.DatabaseHelper;
-import com.treebricks.tourbangladesh.model.SpotCardModel;
+import com.treebricks.tourbangladesh.model.SpotModel;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,11 +33,11 @@ import java.util.List;
 public class Suggestion extends AppCompatActivity {
 
     RecyclerView spotsRecyclerView;
-    List<SpotCardModel> allSpots;
+    List<SpotModel> allSpots;
     SuggestionCardAdapter suggestionCardAdapter;
-
+    SharedPreferences getPrefs;
     Cursor cursor = null;
-
+    Location myLocation;
     private Drawer suggestionDrawer = null;
     private AccountHeader suggestionAccountHeader = null;
 
@@ -43,6 +48,16 @@ public class Suggestion extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_suggestion);
         setSupportActionBar(toolbar);
+
+        getPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String myLatitude = getPrefs.getString("latitude", "23.777785");
+        String myLongitude = getPrefs.getString("longitude", "90.423011");
+
+        myLocation = new Location(LocationManager.GPS_PROVIDER);
+        myLocation.setLatitude(Double.parseDouble(myLatitude));
+        myLocation.setLongitude(Double.parseDouble(myLongitude));
+
 
         // Navigation Drawer Header
         suggestionAccountHeader = new AccountHeaderBuilder()
@@ -122,7 +137,7 @@ public class Suggestion extends AppCompatActivity {
 
         spotsRecyclerView = (RecyclerView) findViewById(R.id.spot_recyclerview);
 
-        allSpots = new ArrayList<SpotCardModel>();
+        allSpots = new ArrayList<SpotModel>();
 
 
         DatabaseHelper databaseHelper = new DatabaseHelper(Suggestion.this);
@@ -132,15 +147,21 @@ public class Suggestion extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        cursor = databaseHelper.rawQuery("Select * From FamousSpot Natural Join SpotImage Where District = ?", new String[] {"Dhaka"});
-        int i = 0;
+        cursor = databaseHelper.rawQuery("Select * From FamousSpot Natural Join SpotImage", null);
         if (cursor.moveToFirst()) {
             do {
+                String spotId = cursor.getString(cursor.getColumnIndex("SpotID"));
                 String spotName = cursor.getString(cursor.getColumnIndex("SpotName"));
-                String spotImage = cursor.getString(cursor.getColumnIndex("ImageURL"));
+                String spotCatagory = cursor.getString(cursor.getColumnIndex("Catagory"));
                 String spotDistrict = cursor.getString(cursor.getColumnIndex("District"));
-                allSpots.add(new SpotCardModel(spotImage, spotName, spotDistrict, String.valueOf(i)+" km"));
-                i++;
+                String spotLocation = cursor.getString(cursor.getColumnIndex("SpotLocation"));
+                String spotDescription = cursor.getString(cursor.getColumnIndex("SpotDescription"));
+                String spotLatitude = cursor.getString(cursor.getColumnIndex("Latitude"));
+                String spotLongitude = cursor.getString(cursor.getColumnIndex("Longitude"));
+                String spotImage = cursor.getString(cursor.getColumnIndex("ImageURL"));
+
+                allSpots.add(new SpotModel(spotId,spotName, spotCatagory,
+                        spotLocation, spotDistrict, spotDescription, spotLatitude, spotLongitude, spotImage));
             } while (cursor.moveToNext());
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();
@@ -148,8 +169,7 @@ public class Suggestion extends AppCompatActivity {
             }
         }
 
-
-        suggestionCardAdapter = new SuggestionCardAdapter(allSpots, Suggestion.this);
+        suggestionCardAdapter = new SuggestionCardAdapter(allSpots, myLocation, Suggestion.this);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
