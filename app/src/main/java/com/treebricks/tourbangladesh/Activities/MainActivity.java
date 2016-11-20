@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             location = locationManager.getLastKnownLocation(provider);
         }
 
-
         // Navigation Drawer Header
         AccountHeader homePageAccountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .addDrawerItems(
                         new PrimaryDrawerItem().withIcon(R.drawable.idea).withName("Spot Suggestion").withIdentifier(1),
                         new PrimaryDrawerItem().withIcon(R.drawable.find_map).withName("Find Spot").withIdentifier(2),
-                        new PrimaryDrawerItem().withIcon(R.drawable.map).withName("Live Map").withIdentifier(3)
+                        new PrimaryDrawerItem().withIcon(R.drawable.map).withName("Live Tour Map").withIdentifier(3)
                 )
                 .addStickyDrawerItems(
                         new PrimaryDrawerItem().withIcon(R.drawable.settings).withName("Settings").withIdentifier(4)
@@ -164,8 +163,9 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             break;
                         }
                         case 3: {
-                            //Intent liveMap = new Intent(MainActivity.this, Suggestion.class);
-                            //startActivity(liveMap);
+                            Intent liveTourMap = new Intent(MainActivity.this, MapActivity.class);
+                            startActivity(liveTourMap);
+                            homePageDrawer.closeDrawer();
                             break;
                         }
                         case 4: {
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onBackPressed() {
         super.onBackPressed();
     }
-    
+
     @Override
     public void onLocationChanged(Location location) {
 

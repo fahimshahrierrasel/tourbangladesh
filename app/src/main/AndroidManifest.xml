@@ -37,8 +37,8 @@
         <activity
             android:name=".activities.About"
             android:label="App Info"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.Settings"/>
+            android:parentActivityName=".activities.Settings"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.Details"
             android:label="@string/app_name"
@@ -46,12 +46,14 @@
         <activity
             android:name=".activities.Settings"
             android:label="Settings"
-            android:parentActivityName=".activities.MainActivity"/>
+            android:parentActivityName=".activities.MainActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyChAQaqNRHJ5GpocynJVk_7VIWm8NtlDn8" />
 
+        <activity android:name=".activities.MapActivity"
+            android:parentActivityName=".activities.MainActivity"/>
     </application>
 
 </manifest>
