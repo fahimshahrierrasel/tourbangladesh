@@ -13,86 +13,84 @@
         android:background="@color/about_activity_color"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <RelativeLayout
-        android:id="@+id/root"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#8CFF8C"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:background="@color/about_activity_background"
         android:paddingTop="?attr/actionBarSize">
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/developer"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="2dp"
-            app:cardCornerRadius="5dp">
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+            <android.support.v7.widget.CardView
+                android:id="@+id/developer"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="15dp"
+                app:cardCornerRadius="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/developer_logo"
+                        android:layout_width="120dp"
+                        android:layout_height="90dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/logo" />
+
+                    <TextView
+                        android:id="@+id/developer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/developer_logo"
+                        android:layout_centerHorizontal="true"
+                        android:background="#FFFFFF"
+                        android:text="Developed by\n\ttreebricks"
+                        android:textColor="#2B1B17" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/developer_name"
+                        android:layout_centerHorizontal="true"
+                        android:background="#FFFFFF"
+                        android:text="www.treebricks.com"
+                        android:textColor="#2B1B17" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="181dp">
-
-                <ImageView
-                    android:id="@+id/developer_logo"
-                    android:layout_width="200dp"
-                    android:layout_height="130dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="#FFFFFF"
-                    android:src="@drawable/logo" />
-
-                <TextView
-                    android:id="@+id/developer_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/developer_logo"
-                    android:layout_centerHorizontal="true"
-                    android:background="#FFFFFF"
-                    android:text="Developed by\n\ttreebricks"
-                    android:textColor="#2B1B17" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/developer_name"
-                    android:layout_centerHorizontal="true"
-                    android:background="#FFFFFF"
-                    android:text="www.treebricks.com"
-                    android:textColor="#2B1B17" />
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/app_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/developer"
-            app:cardCornerRadius="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
+                android:layout_height="wrap_content"
+                android:id="@+id/buttons"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/developer">
                 <Button
                     android:id="@+id/about_us"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="2dp"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_centerHorizontal="true"
                     android:background="#36A228"
+                    android:elevation="4dp"
                     android:text="About  Us"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF" />
 
                 <Button
                     android:id="@+id/why_tourbd"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_alignParentStart="true"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:elevation="4dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_below="@+id/about_us"
                     android:layout_marginTop="2dp"
                     android:background="#36A228"
@@ -102,12 +100,13 @@
 
                 <Button
                     android:id="@+id/privacy_policy"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_alignParentStart="true"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_below="@+id/why_tourbd"
                     android:layout_marginTop="2dp"
                     android:background="#36A228"
+                    android:elevation="4dp"
                     android:text="Privacy policy"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF" />
@@ -115,61 +114,60 @@
 
                 <Button
                     android:id="@+id/data_sources"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_width="200dp"
+                    android:elevation="4dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="40dp"
                     android:layout_below="@id/privacy_policy"
                     android:layout_marginTop="2dp"
                     android:background="#36A228"
                     android:text="Data Sources"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF" />
-
-
             </RelativeLayout>
-        </android.support.v7.widget.CardView>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="181dp"
-            android:layout_below="@+id/app_info"
-            android:layout_marginTop="10dp"
-            android:background="#8CFF8C">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/buttons"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp">
+                <ImageButton
+                    android:id="@+id/fb"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/about_activity_background"
+                    android:src="@drawable/fb"
+                    android:scaleType="fitXY"
+                    android:text="Facebook" />
 
+                <ImageButton
+                    android:id="@+id/google"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/google_plus"
+                    android:background="@color/about_activity_background"
+                    android:scaleType="fitXY"
+                    android:text="Google+" />
 
-            <ImageButton
-                android:id="@+id/fb"
-                android:layout_width="100dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="2dp"
-                android:background="#4E598F"
-                android:src="@drawable/fb"
-                android:text="Facebook" />
-
-            <ImageButton
-                android:id="@+id/google"
-                android:layout_width="100dp"
-                android:layout_height="80dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:background="#CC3731"
-                android:src="@drawable/g"
-                android:text="Google+" />
-
-            <ImageButton
-                android:id="@+id/play_store"
-                android:layout_width="100dp"
-                android:layout_height="80dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:background="#ff349886"
-                android:src="@drawable/p"
-                android:text="Play Store" />
-
-
+                <ImageButton
+                    android:id="@+id/play_store"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@color/about_activity_background"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/google_play"
+                    android:text="Play Store" />
+            </RelativeLayout>
         </RelativeLayout>
+    </ScrollView>
 
 
-    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

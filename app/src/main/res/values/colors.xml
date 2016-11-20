@@ -9,6 +9,7 @@
     <color name="suggestion_activity_color">#A7425C</color>
     <color name="spot_finder_activity_color">#607D8B</color>
     <color name="about_activity_color">#43A047</color>
+    <color name="about_activity_background">#8CFF8C</color>
     <color name="details_toolbar">#34495E</color>
     <color name="details_view">#E6E9ED</color>
 
