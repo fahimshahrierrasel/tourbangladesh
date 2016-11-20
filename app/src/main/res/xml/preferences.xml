@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.treebricks.ewuhub.ui.Preferences">
+    <ListPreference
+        android:icon="@drawable/radar"
+        android:title="Search Parameter"
+        android:summary="Please select the search parameter from your current location"
+        android:entries="@array/distance_array"
+        android:entryValues="@array/distance_array_values"
+        android:defaultValue="5"
+        android:dialogIcon="@drawable/radar"
+        android:key="parameter"/>
+    <Preference
+        android:key="developer"
+        android:icon="@drawable/information"
+        android:summary="Hey, Do you want to know more about EwuHub and treebricks?"
+        android:title="About Tour Bangladesh" />
+
+</PreferenceScreen>

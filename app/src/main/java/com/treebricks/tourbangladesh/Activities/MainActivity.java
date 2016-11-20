@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     TextView latitude;
     TextView longitude;
     TextView addressTextView;
+    TextView searchParameter;
     public static final String TAG = MainActivity.class.getSimpleName();
     LocationManager locationManager;
     String provider;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         latitude = (TextView) findViewById(R.id.latitude);
         longitude = (TextView) findViewById(R.id.longitude);
         addressTextView = (TextView) findViewById(R.id.address);
+        searchParameter = (TextView) findViewById(R.id.search_parameter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -130,65 +132,56 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .withSavedInstance(savedInstanceState)
                 .build();
         // Navigation Drawer
-        Drawer homePageDrawer = new DrawerBuilder()
+        final Drawer homePageDrawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withAccountHeader(homePageAccountHeader)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withIcon(R.drawable.home).withName("Home").withIdentifier(1),
-                        new PrimaryDrawerItem().withIcon(R.drawable.idea).withName("Spot Suggestion").withIdentifier(2),
-                        new PrimaryDrawerItem().withIcon(R.drawable.find_map).withName("Find Spot").withIdentifier(3),
-                        new PrimaryDrawerItem().withIcon(R.drawable.map).withName("Live Map").withIdentifier(4)
+                        new PrimaryDrawerItem().withIcon(R.drawable.idea).withName("Spot Suggestion").withIdentifier(1),
+                        new PrimaryDrawerItem().withIcon(R.drawable.find_map).withName("Find Spot").withIdentifier(2),
+                        new PrimaryDrawerItem().withIcon(R.drawable.map).withName("Live Map").withIdentifier(3)
                 )
                 .addStickyDrawerItems(
-                        new PrimaryDrawerItem().withIcon(R.drawable.settings).withName("Settings").withIdentifier(5),
-                        new PrimaryDrawerItem().withIcon(R.drawable.info).withName("Info").withIdentifier(6)
+                        new PrimaryDrawerItem().withIcon(R.drawable.settings).withName("Settings").withIdentifier(4)
                 )
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        if (drawerItem != null) {
-                            switch ((int) drawerItem.getIdentifier()) {
-                                case 1: {
-                                    Snackbar.make(view, "You are already on Home.", Snackbar.LENGTH_SHORT).show();
-                                    break;
-                                }
-                                case 2: {
-                                    Intent suggestion = new Intent(MainActivity.this, Suggestion.class);
-                                    startActivity(suggestion);
-                                    finish();
-                                    break;
-                                }
-                                case 3: {
-                                    Intent spotFinder = new Intent(MainActivity.this, SpotFinder.class);
-                                    startActivity(spotFinder);
-                                    finish();
-                                    break;
-                                }
-                                case 4: {
-                                    //Intent liveMap = new Intent(MainActivity.this, Suggestion.class);
-                                    //startActivity(liveMap);
-                                    break;
-                                }
-                                case 5: {
-                                    //Intent settings = new Intent(MainActivity.this, Suggestion.class);
-                                    //startActivity(settings);
-                                    break;
-                                }
-                                case 6: {
-                                    Intent info = new Intent(MainActivity.this, About.class);
-                                    startActivity(info);
-                                    finish();
-                                    break;
-                                }
-
-                            }
-                        }
-                        return true;
-                    }
-                })
                 .build();
 
+
+        homePageDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+
+                if (drawerItem != null) {
+                    switch ((int) drawerItem.getIdentifier()) {
+                        case 1: {
+                            Intent suggestion = new Intent(MainActivity.this, Suggestion.class);
+                            startActivity(suggestion);
+                            homePageDrawer.closeDrawer();
+                            break;
+                        }
+                        case 2: {
+                            Intent spotFinder = new Intent(MainActivity.this, SpotFinder.class);
+                            startActivity(spotFinder);
+                            homePageDrawer.closeDrawer();
+                            break;
+                        }
+                        case 3: {
+                            //Intent liveMap = new Intent(MainActivity.this, Suggestion.class);
+                            //startActivity(liveMap);
+                            break;
+                        }
+                        case 4: {
+                            Intent settings = new Intent(MainActivity.this, Settings.class);
+                            startActivity(settings);
+                            homePageDrawer.closeDrawer();
+                            break;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        });
 
         final int[] flag = {0};
 
@@ -219,6 +212,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             latitude.setText(getPrefs.getString("latitude", "00.0000000"));
             longitude.setText(getPrefs.getString("longitude", "00.0000000"));
         }
+
+        searchParameter.setText(String.valueOf(getPrefs.getString("parameter","0")));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

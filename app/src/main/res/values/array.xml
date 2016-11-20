@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Distance of array -->
+    <string-array name="distance_array">
+        <item>5 km</item>
+        <!--item>5</item-->
+
+        <item>10 km</item>
+        <!--item>10</item-->
+
+        <item>20 km</item>
+        <!--item>20</item-->
+
+        <item>30 km</item>
+        <!--item>30</item-->
+
+        <item>50 km</item>
+        <!--item>50</item-->
+    </string-array>
+
+    <!-- Distance array values -->
+    <string-array name="distance_array_values">
+        <!--item>5 km</item-->
+        <item>5</item>
+
+        <!--item>10 km</item-->
+        <item>10</item>
+
+        <!--item>20 km</item-->
+        <item>20</item>
+
+        <!--item>30 km</item-->
+        <item>30</item>
+
+        <!--item>50 km</item-->
+        <item>50</item>
+    </string-array>
+</resources>
