@@ -1,10 +1,14 @@
 package com.treebricks.tourbangladesh.activities;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +18,7 @@ import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -23,6 +28,8 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.treebricks.tourbangladesh.R;
+
+import static android.R.id.message;
 
 public class About extends AppCompatActivity {
 
@@ -36,6 +43,54 @@ public class About extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_about);
         setSupportActionBar(toolbar);
+
+        Button aboutus = (Button) findViewById(R.id.about_us);
+        Button appInfo = (Button) findViewById(R.id.why_tourbd);
+        Button privacyPolicy = (Button) findViewById(R.id.privacy_policy);
+        Button dataSource = (Button) findViewById(R.id.data_sources);
+        aboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(About.this);
+                builder.setTitle("About Us")
+                        .setMessage("Hello This is a test about us. Hello Again thank you!")
+                        .setPositiveButton("OK", null);
+                builder.create().show();
+            }
+        });
+
+        appInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(About.this);
+                builder.setTitle("Why Tour Bangladesh?")
+                        .setMessage("Hello This is a test about us. Hello Again thank you!")
+                        .setPositiveButton("OK", null);
+                builder.create().show();
+            }
+        });
+
+        privacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(About.this);
+                builder.setTitle("Privacy Policy")
+                        .setMessage("Hello This is a test about us. Hello Again thank you!")
+                        .setPositiveButton("OK", null);
+                builder.create().show();
+            }
+        });
+
+        dataSource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(About.this);
+                builder.setTitle("Data Sources")
+                        .setMessage("Hello This is a test about us. Hello Again thank you!")
+                .setPositiveButton("OK", null);
+                builder.create().show();
+            }
+        });
 
         // Navigation Drawer Header
         aboutAccountHeader = new AccountHeaderBuilder()
@@ -114,6 +169,4 @@ public class About extends AppCompatActivity {
                 })
                 .build();
     }
-
-
 }
