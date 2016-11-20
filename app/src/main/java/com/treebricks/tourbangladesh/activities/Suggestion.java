@@ -47,13 +47,9 @@ public class Suggestion extends AppCompatActivity {
         myLocation.setLongitude(Double.parseDouble(myLongitude));
 
 
-
-
-
         spotsRecyclerView = (RecyclerView) findViewById(R.id.spot_recyclerview);
 
         allSpots = new ArrayList<SpotModel>();
-
 
         DatabaseHelper databaseHelper = new DatabaseHelper(Suggestion.this);
         try{
@@ -90,8 +86,6 @@ public class Suggestion extends AppCompatActivity {
 
         spotsRecyclerView.setLayoutManager(linearLayoutManager);
         spotsRecyclerView.setAdapter(suggestionCardAdapter);
-
-
 
         if(getSupportActionBar() != null)
         {

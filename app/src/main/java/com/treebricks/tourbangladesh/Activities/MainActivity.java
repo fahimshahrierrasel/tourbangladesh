@@ -49,11 +49,12 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
+    public static final String TAG = MainActivity.class.getSimpleName();
     TextView latitude;
     TextView longitude;
     TextView addressTextView;
     TextView searchParameter;
-    public static final String TAG = MainActivity.class.getSimpleName();
+
     LocationManager locationManager;
     String provider;
     String lalbaghFort1 = "http://i.imgur.com/SAvQ8N6.jpg";
@@ -74,19 +75,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             @Override
             public void run() {
 
-
                 boolean isFirstRun = getPrefs.getBoolean("first_run", true);
                 if (isFirstRun) {
                     copyDatabase("FamousSpots.db");
-                    SharedPreferences.Editor e = getPrefs.edit();
-                    e.putBoolean("first_run", false);
-                    e.apply();
+                    SharedPreferences.Editor editor = getPrefs.edit();
+                    editor.putBoolean("first_run", false);
+                    editor.putString("parameter", "5");
+                    editor.apply();
                 }
             }
         });
         t.start();
         setContentView(R.layout.activity_main);
-
 
         backdrop = (ImageView) findViewById(R.id.backdrop);
         latitude = (TextView) findViewById(R.id.latitude);
@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
@@ -121,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             provider = locationManager.getBestProvider(criteria, false);
             location = locationManager.getLastKnownLocation(provider);
         }
-
 
 
         // Navigation Drawer Header
@@ -224,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-
     }
 
 
@@ -232,8 +229,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onBackPressed() {
         super.onBackPressed();
     }
-
-
+    
     @Override
     public void onLocationChanged(Location location) {
 
@@ -264,10 +260,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             addressTextView.setText(fnialAddress); //This will display the final address.
 
 
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             // Handle IOException
-        } catch (NullPointerException e) {
-            // Handle NullPointerException
         }
 
     }
