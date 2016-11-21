@@ -37,5 +37,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:9.8.0'
     compile 'com.google.android.gms:play-services:9.8.0'
     compile 'noman.placesapi:placesAPI:1.0.0'
+    compile 'com.github.thunderrise:android-TNRAnimationHelper:-SNAPSHOT'
     testCompile 'junit:junit:4.12'
 }

@@ -14,52 +14,59 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/app_name"
+
+        <activity android:name=".activities.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activities.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.Suggestion"
             android:label="Spot Suggestion"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.SpotFinder"
             android:label="Spot Finder"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.About"
             android:label="App Info"
             android:parentActivityName=".activities.Settings"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.Details"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.Settings"
             android:label="Settings"
             android:parentActivityName=".activities.MainActivity" />
 
+        <activity
+            android:name=".activities.MapActivity"
+            android:parentActivityName=".activities.MainActivity" />
+
+        <activity
+            android:name=".activities.Emergency"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyChAQaqNRHJ5GpocynJVk_7VIWm8NtlDn8" />
-
-        <activity
-            android:name=".activities.MapActivity"
-            android:parentActivityName=".activities.MainActivity"
-            />
-        <activity android:name=".activities.Emergency"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.MainActivity"/>
-
     </application>
 
 </manifest>
