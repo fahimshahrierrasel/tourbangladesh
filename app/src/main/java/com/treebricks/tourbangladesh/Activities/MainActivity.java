@@ -53,7 +53,7 @@ import noman.googleplaces.PlacesException;
 import noman.googleplaces.PlacesListener;
 
 
-public class MainActivity extends AppCompatActivity implements LocationListener, PlacesListener {
+public class MainActivity extends AppCompatActivity implements LocationListener{
 
     public static final String TAG = MainActivity.class.getSimpleName();
     TextView latitude;
@@ -239,14 +239,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                new NRPlaces.Builder()
-                        .listener(MainActivity.this)
-                        .latlng(Double.parseDouble(latitudeString), Double.parseDouble(longitudeString))
-                        .radius(2000)
-                        .type(PlaceType.FIRE_STATION)
-                        .key("AIzaSyD8DqyAIjH8TVcPLQpmmyXUEZ4QtETq7Fo")
-                        .build()
-                        .execute();
             }
         });
 
@@ -407,32 +399,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             } catch (IOException ignored) {
             }
         }
-    }
-
-    @Override
-    public void onPlacesFailure(PlacesException e) {
-
-    }
-
-    @Override
-    public void onPlacesStart() {
-        Log.e("Noman", "onPlacesStart");
-
-    }
-
-    @Override
-    public void onPlacesSuccess(List<Place> places) {
-        for (Place place : places)
-        {
-            System.out.println(place.getName());
-
-        }
-
-    }
-
-    @Override
-    public void onPlacesFinished() {
-        Log.e("Noman", "onPlacesFinished");
     }
 
 }
