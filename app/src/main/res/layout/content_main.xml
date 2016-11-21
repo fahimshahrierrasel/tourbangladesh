@@ -12,39 +12,128 @@
         android:layout_height="match_parent"
         android:layout_margin="16dp">
 
-        <TextView
-            android:id="@+id/program_location"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location by Program" />
+            android:layout_margin="5dp"
+            android:id="@+id/gps_card"
+            app:cardCornerRadius="5dp"
+            app:cardBackgroundColor="@color/splash_activity_color"
+            app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/latitude"
-            android:layout_below="@+id/program_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/longitude"
-            android:layout_below="@+id/latitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!" />
+                <TextView
+                    android:id="@+id/card_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="Your current location" />
 
-        <TextView
-            android:id="@+id/address"
-            android:layout_below="@+id/longitude"
-            android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/co_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/card_header"
+                    android:padding="10dp"
+                    android:text="Coordinates : " />
+
+                <TextView
+                    android:id="@+id/coordinate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/co_label"
+                    android:layout_below="@id/card_header"
+                    android:padding="10dp"
+                    android:text="22.777800, 90.223454" />
+
+                <TextView
+                    android:id="@+id/user_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/co_label"
+                    android:padding="10dp"
+                    android:text="Location" />
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/co_label"
+                    android:layout_toEndOf="@+id/user_location"
+                    android:padding="10dp"
+                    android:text="Middle Badda, Dhaka - 1212" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World!" />
-        <TextView
-            android:id="@+id/search_parameter"
-            android:layout_below="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="Hello World!" />
+            android:layout_margin="5dp"
+            android:id="@+id/suggested_card"
+            android:layout_below="@+id/gps_card"
+            app:cardCornerRadius="5dp"
+            app:cardBackgroundColor="@color/splash_activity_color"
+            app:cardElevation="4dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/suggest_card_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="I'm Feeling Luckey" />
+
+                <ImageView
+                    android:id="@+id/suggested_card_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@color/colorAccent"
+                    android:layout_below="@+id/suggest_card_header"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/minimalistic_city"
+                    android:contentDescription="@string/card_spot_image" />
+                <TextView
+                    android:id="@+id/suggested_spot_name"
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/suggested_card_image"
+                    android:padding="5dp"
+                    android:text="@string/card_spot_name" />
+
+                <TextView
+                    android:id="@+id/suggested_card_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/suggested_spot_name"
+                    android:padding="5dp"
+                    android:text="@string/card_spot_location" />
+
+                <TextView
+                    android:id="@+id/suggested_card_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/suggested_card_image"
+                    android:padding="5dp"
+                    android:text="@string/card_spot_distance" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

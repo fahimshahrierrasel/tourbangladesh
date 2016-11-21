@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -17,8 +18,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,33 +36,32 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.treebricks.tourbangladesh.R;
+import com.treebricks.tourbangladesh.database.DatabaseHelper;
+import com.treebricks.tourbangladesh.model.SpotModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
-
-import noman.googleplaces.NRPlaces;
-import noman.googleplaces.Place;
-import noman.googleplaces.PlaceType;
-import noman.googleplaces.PlacesException;
-import noman.googleplaces.PlacesListener;
-
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements LocationListener{
 
     public static final String TAG = MainActivity.class.getSimpleName();
-    TextView latitude;
-    TextView longitude;
+
+    TextView coordinates;
+    TextView userAddress;
+    ImageView suggestedCardImage;
+    TextView suggestedSpotName;
+    TextView suggestedLocation;
+    TextView suggestedDistance;
 
     String latitudeString;
     String longitudeString;
-    TextView addressTextView;
-    TextView searchParameter;
-
     LocationManager locationManager;
     String provider;
     String lalbaghFort1 = "http://i.imgur.com/SAvQ8N6.jpg";
@@ -71,8 +69,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     ImageView backdrop;
     CountDownTimer countDownTimer;
     Location location;
+    Location myLocation;
     SharedPreferences getPrefs;
     Criteria criteria;
+    Cursor cursor = null;
+
+    Random random;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +101,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         setContentView(R.layout.activity_main);
 
         backdrop = (ImageView) findViewById(R.id.backdrop);
-        latitude = (TextView) findViewById(R.id.latitude);
-        longitude = (TextView) findViewById(R.id.longitude);
-        addressTextView = (TextView) findViewById(R.id.address);
-        searchParameter = (TextView) findViewById(R.id.search_parameter);
+        suggestedCardImage = (ImageView) findViewById(R.id.suggested_card_image);
+        coordinates = (TextView) findViewById(R.id.coordinate);
+        userAddress = (TextView) findViewById(R.id.location);
+        suggestedSpotName = (TextView) findViewById(R.id.suggested_spot_name);
+        suggestedLocation = (TextView) findViewById(R.id.suggested_card_location);
+        suggestedDistance = (TextView) findViewById(R.id.suggested_card_distance);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -133,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         // Navigation Drawer Header
         AccountHeader homePageAccountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
-                .withHeaderBackground(R.drawable.visit_bangladesh)
+                .withHeaderBackground(R.drawable.bangladesh)
                 .withCompactStyle(false)
                 .withSavedInstance(savedInstanceState)
                 .build();
@@ -152,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                         new PrimaryDrawerItem().withIcon(R.drawable.settings).withName("Settings").withIdentifier(5)
                 )
                 .build();
-
 
         homePageDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -221,29 +225,67 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         latitudeString = getPrefs.getString("latitude", "00.0000000");
         longitudeString = getPrefs.getString("longitude", "00.0000000");
 
+        myLocation = new Location(LocationManager.GPS_PROVIDER);
+        myLocation.setLatitude(Double.parseDouble(latitudeString));
+        myLocation.setLongitude(Double.parseDouble(longitudeString));
+
 
         if (location != null) {
             System.out.println("Provider " + provider + " has been selected.");
             onLocationChanged(location);
         } else {
-            latitude.setText(latitudeString);
-            longitude.setText(longitudeString);
+            coordinates.setText(latitudeString + ", " + longitudeString);
         }
 
-        searchParameter.setText(String.valueOf(getPrefs.getString("parameter","0")));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.this);
+        try{
+            databaseHelper.openDataBase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        random = new Random();
+
+        int randomNumber = random.nextInt(61);
+
+
+        cursor = databaseHelper.rawQuery("Select * From FamousSpot Natural Join SpotImage Where SpotID = ?", new String[]{String.valueOf(randomNumber)});
+        if (cursor.moveToFirst()) {
+            do {
+                String spotId = cursor.getString(cursor.getColumnIndex("SpotID"));
+                String spotName = cursor.getString(cursor.getColumnIndex("SpotName"));
+                String spotCatagory = cursor.getString(cursor.getColumnIndex("Catagory"));
+                String spotDistrict = cursor.getString(cursor.getColumnIndex("District"));
+                String spotLocation = cursor.getString(cursor.getColumnIndex("SpotLocation"));
+                String spotDescription = cursor.getString(cursor.getColumnIndex("SpotDescription"));
+                String spotLatitude = cursor.getString(cursor.getColumnIndex("Latitude"));
+                String spotLongitude = cursor.getString(cursor.getColumnIndex("Longitude"));
+                String spotImage = cursor.getString(cursor.getColumnIndex("ImageURL"));
+
+                Location userLocation = new Location(LocationManager.GPS_PROVIDER);
+                userLocation.setLatitude(Double.parseDouble(spotLatitude));
+                userLocation.setLongitude(Double.parseDouble(spotLongitude));
+
+                float distance = userLocation.distanceTo(myLocation) / 1000;
+
+                SpotModel spotModel = new SpotModel(spotId,spotName, spotCatagory,
+                        spotLocation, spotDistrict, spotDescription, spotLatitude, spotLongitude, spotImage);
+
+                Glide.with(MainActivity.this).load(spotModel.getSpotImageUrl()).into(suggestedCardImage);
+                suggestedSpotName.setText(spotModel.getSpotName());
+                suggestedLocation.setText(spotModel.getSpotLocation());
+                suggestedDistance.setText(String.format(Locale.US, "Distance %.2f km", distance));
+
+
+            } while (cursor.moveToNext());
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
+                databaseHelper.close();
             }
-        });
+        }
 
     }
-
 
     @Override
     public void onBackPressed() {
@@ -262,8 +304,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         preferenceEditor.putString("longitude", String.format(Locale.US, "%.7f", lng));
         preferenceEditor.apply();
 
-        latitude.setText(getPrefs.getString("latitude", "00.0000000"));
-        longitude.setText(getPrefs.getString("longitude", "00.0000000"));
+        coordinates.setText(getPrefs.getString("latitude", "00.0000000") + ", " + getPrefs.getString("longitude", "00.0000000"));
 
 
         Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
@@ -273,11 +314,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             int maxLines = address.get(0).getMaxAddressLineIndex();
             for (int i = 0; i < maxLines; i++) {
                 String addressStr = address.get(0).getAddressLine(i);
+                builder.append(", ");
                 builder.append(addressStr);
-                builder.append("\n");
             }
             String fnialAddress = builder.toString(); //This is the complete address.
-            addressTextView.setText(fnialAddress); //This will display the final address.
+            userAddress.setText(fnialAddress); //This will display the final address.
 
 
         } catch (IOException | NullPointerException e) {

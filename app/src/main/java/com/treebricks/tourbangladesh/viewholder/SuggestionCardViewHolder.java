@@ -1,6 +1,5 @@
 package com.treebricks.tourbangladesh.viewholder;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -26,9 +25,9 @@ public class SuggestionCardViewHolder extends RecyclerView.ViewHolder {
     public SuggestionCardViewHolder(View itemView) {
         super(itemView);
         cardSpotImage = (ImageView) itemView.findViewById(R.id.card_spot_image);
-        cardSpotName = (TextView) itemView.findViewById(R.id.card_spot_name);
-        cardSpotLocation = (TextView) itemView.findViewById(R.id.card_spot_location);
-        cardSpotDistance = (TextView) itemView.findViewById(R.id.card_spot_distance);
+        cardSpotName = (TextView) itemView.findViewById(R.id.suggested_spot_name);
+        cardSpotLocation = (TextView) itemView.findViewById(R.id.suggested_card_location);
+        cardSpotDistance = (TextView) itemView.findViewById(R.id.suggested_card_distance);
         suggestionCard = (CardView) itemView.findViewById(R.id.suggestion_card);
     }
 
