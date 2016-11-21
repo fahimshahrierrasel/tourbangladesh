@@ -89,7 +89,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .snippet("This is your Location. Isn't it?")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_person))
         );
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 9f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 6.7f));
 
         for(int i = 0; i < allLocations.size(); i++)
         {
