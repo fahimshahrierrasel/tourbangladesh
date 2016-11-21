@@ -52,8 +52,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyChAQaqNRHJ5GpocynJVk_7VIWm8NtlDn8" />
 
-        <activity android:name=".activities.MapActivity"
+        <activity
+            android:name=".activities.MapActivity"
+            android:parentActivityName=".activities.MainActivity"
+            />
+        <activity android:name=".activities.Emergency"
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainActivity"/>
+
     </application>
 
 </manifest>

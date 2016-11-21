@@ -46,12 +46,21 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Locale;
 
+import noman.googleplaces.NRPlaces;
+import noman.googleplaces.Place;
+import noman.googleplaces.PlaceType;
+import noman.googleplaces.PlacesException;
+import noman.googleplaces.PlacesListener;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+
+public class MainActivity extends AppCompatActivity implements LocationListener, PlacesListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     TextView latitude;
     TextView longitude;
+
+    String latitudeString;
+    String longitudeString;
     TextView addressTextView;
     TextView searchParameter;
 
@@ -136,10 +145,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 .addDrawerItems(
                         new PrimaryDrawerItem().withIcon(R.drawable.idea).withName("Spot Suggestion").withIdentifier(1),
                         new PrimaryDrawerItem().withIcon(R.drawable.find_map).withName("Find Spot").withIdentifier(2),
-                        new PrimaryDrawerItem().withIcon(R.drawable.map).withName("Live Tour Map").withIdentifier(3)
+                        new PrimaryDrawerItem().withIcon(R.drawable.map).withName("Live Tour Map").withIdentifier(3),
+                        new PrimaryDrawerItem().withIcon(R.drawable.fire_alarm).withName("Emergency").withIdentifier(4)
                 )
                 .addStickyDrawerItems(
-                        new PrimaryDrawerItem().withIcon(R.drawable.settings).withName("Settings").withIdentifier(4)
+                        new PrimaryDrawerItem().withIcon(R.drawable.settings).withName("Settings").withIdentifier(5)
                 )
                 .build();
 
@@ -169,6 +179,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                             break;
                         }
                         case 4: {
+                            Intent emergency = new Intent(MainActivity.this, Emergency.class);
+                            startActivity(emergency);
+                            homePageDrawer.closeDrawer();
+                            break;
+                        }
+                        case 5: {
                             Intent settings = new Intent(MainActivity.this, Settings.class);
                             startActivity(settings);
                             homePageDrawer.closeDrawer();
@@ -202,13 +218,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         };
         countDownTimer.start();
 
+        latitudeString = getPrefs.getString("latitude", "00.0000000");
+        longitudeString = getPrefs.getString("longitude", "00.0000000");
+
 
         if (location != null) {
             System.out.println("Provider " + provider + " has been selected.");
             onLocationChanged(location);
         } else {
-            latitude.setText(getPrefs.getString("latitude", "00.0000000"));
-            longitude.setText(getPrefs.getString("longitude", "00.0000000"));
+            latitude.setText(latitudeString);
+            longitude.setText(longitudeString);
         }
 
         searchParameter.setText(String.valueOf(getPrefs.getString("parameter","0")));
@@ -219,6 +238,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                new NRPlaces.Builder()
+                        .listener(MainActivity.this)
+                        .latlng(Double.parseDouble(latitudeString), Double.parseDouble(longitudeString))
+                        .radius(2000)
+                        .type(PlaceType.FIRE_STATION)
+                        .key("AIzaSyD8DqyAIjH8TVcPLQpmmyXUEZ4QtETq7Fo")
+                        .build()
+                        .execute();
             }
         });
 
@@ -379,6 +407,32 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             } catch (IOException ignored) {
             }
         }
+    }
+
+    @Override
+    public void onPlacesFailure(PlacesException e) {
+
+    }
+
+    @Override
+    public void onPlacesStart() {
+        Log.e("Noman", "onPlacesStart");
+
+    }
+
+    @Override
+    public void onPlacesSuccess(List<Place> places) {
+        for (Place place : places)
+        {
+            System.out.println(place.getName());
+
+        }
+
+    }
+
+    @Override
+    public void onPlacesFinished() {
+        Log.e("Noman", "onPlacesFinished");
     }
 
 }
