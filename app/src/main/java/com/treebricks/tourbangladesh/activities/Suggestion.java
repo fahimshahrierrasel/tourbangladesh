@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,7 @@ public class Suggestion extends AppCompatActivity {
     SharedPreferences getPrefs;
     Cursor cursor = null;
     Location myLocation;
+    float spotDistance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,8 @@ public class Suggestion extends AppCompatActivity {
 
         String myLatitude = getPrefs.getString("latitude", "23.777785");
         String myLongitude = getPrefs.getString("longitude", "90.423011");
+
+        spotDistance = Float.parseFloat(getPrefs.getString("parameter", "5"));
 
         myLocation = new Location(LocationManager.GPS_PROVIDER);
         myLocation.setLatitude(Double.parseDouble(myLatitude));
@@ -71,8 +75,18 @@ public class Suggestion extends AppCompatActivity {
                 String spotLongitude = cursor.getString(cursor.getColumnIndex("Longitude"));
                 String spotImage = cursor.getString(cursor.getColumnIndex("ImageURL"));
 
-                allSpots.add(new SpotModel(spotId,spotName, spotCatagory,
-                        spotLocation, spotDistrict, spotDescription, spotLatitude, spotLongitude, spotImage));
+                Location userLocation = new Location(LocationManager.GPS_PROVIDER);
+                userLocation.setLatitude(Double.parseDouble(spotLatitude));
+                userLocation.setLongitude(Double.parseDouble(spotLongitude));
+
+                float distance = userLocation.distanceTo(myLocation) / 1000;
+
+                if(distance <= spotDistance)
+                {
+                    allSpots.add(new SpotModel(spotId,spotName, spotCatagory,
+                            spotLocation, spotDistrict, spotDescription, spotLatitude, spotLongitude, spotImage));
+                }
+
             } while (cursor.moveToNext());
             if (cursor != null && !cursor.isClosed()) {
                 cursor.close();

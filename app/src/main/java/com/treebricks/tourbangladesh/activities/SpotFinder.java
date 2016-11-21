@@ -29,7 +29,6 @@ import java.util.List;
 
 public class SpotFinder extends AppCompatActivity {
 
-
     List<String> catagories;
     RecyclerView finderRecyclerView;
     List<SpotModel> allSpots;
