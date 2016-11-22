@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/card_header"
                     android:padding="10dp"
-                    android:text="Coordinates : " />
+                    android:text="Coordinates" />
 
                 <TextView
                     android:id="@+id/coordinate"
@@ -58,14 +58,14 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/co_label"
                     android:padding="10dp"
-                    android:text="Location" />
+                    android:text="Location " />
 
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/co_label"
-                    android:layout_toEndOf="@+id/user_location"
+                    android:layout_toEndOf="@+id/co_label"
                     android:padding="10dp"
                     android:text="Middle Badda, Dhaka - 1212" />
 

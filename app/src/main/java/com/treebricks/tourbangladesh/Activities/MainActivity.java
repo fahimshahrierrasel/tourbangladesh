@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     TextView suggestedSpotName;
     TextView suggestedLocation;
     TextView suggestedDistance;
+    CardView suggestedCard;
 
     String latitudeString;
     String longitudeString;
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
     SharedPreferences getPrefs;
     Criteria criteria;
     Cursor cursor = null;
-
+    SpotModel spotModel;
     Random random;
 
 
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
         suggestedSpotName = (TextView) findViewById(R.id.suggested_spot_name);
         suggestedLocation = (TextView) findViewById(R.id.suggested_card_location);
         suggestedDistance = (TextView) findViewById(R.id.suggested_card_distance);
+        suggestedCard = (CardView) findViewById(R.id.suggested_card);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -269,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
 
                 float distance = userLocation.distanceTo(myLocation) / 1000;
 
-                SpotModel spotModel = new SpotModel(spotId,spotName, spotCatagory,
+                spotModel = new SpotModel(spotId,spotName, spotCatagory,
                         spotLocation, spotDistrict, spotDescription, spotLatitude, spotLongitude, spotImage);
 
                 Glide.with(MainActivity.this).load(spotModel.getSpotImageUrl()).into(suggestedCardImage);
@@ -284,6 +287,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
                 databaseHelper.close();
             }
         }
+
+        suggestedCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent details = new Intent(MainActivity.this, Details.class);
+                details.putExtra("SPOT_NAME", spotModel.getSpotName());
+                startActivity(details);
+            }
+        });
 
     }
 
@@ -314,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener{
             int maxLines = address.get(0).getMaxAddressLineIndex();
             for (int i = 0; i < maxLines; i++) {
                 String addressStr = address.get(0).getAddressLine(i);
-                builder.append(", ");
+                builder.append(" ");
                 builder.append(addressStr);
             }
             String fnialAddress = builder.toString(); //This is the complete address.
