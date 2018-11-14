@@ -3,6 +3,8 @@ Tour Bangladesh is a smart tourism application for Bangladesh. By using this app
 
 ### Screenshots
 
-![Screenshot_20181110-204907](assets/Screenshot_20181110-204907.png) ![Screenshot_20181110-204924](assets/Screenshot_20181110-204924.png) ![Screenshot_20181110-204932](assets/Screenshot_20181110-204932.png)
+![Screenshot_20181110-204907](assets/Screenshot_20181110-204907.png) ![Screenshot_20181110-204924](assets/Screenshot_20181110-204924.png) 
 
-![Screenshot_20181110-205011](assets/Screenshot_20181110-205011.png) ![Screenshot_20181110-205025](assets/Screenshot_20181110-205025.png) ![Screenshot_20181110-205041](assets/Screenshot_20181110-205041.png)
+![Screenshot_20181110-204932](assets/Screenshot_20181110-204932.png) ![Screenshot_20181110-205011](assets/Screenshot_20181110-205011.png)
+
+![Screenshot_20181110-205025](assets/Screenshot_20181110-205025.png) ![Screenshot_20181110-205041](assets/Screenshot_20181110-205041.png)
